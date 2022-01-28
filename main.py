@@ -48,10 +48,10 @@ INDEX_HTML = """
 
 # TODO
 dirname = os.path.dirname(__file__)
-CSS = os.path.join(dirname, 'build')
-JS = os.path.join(dirname, 'build')
+# CSS = os.path.join(dirname, 'build')
+# JS = os.path.join(dirname, 'build')
 BUILD = os.path.join(dirname, 'build')
-print(CSS, JS)
+# print(CSS, JS)
 
 
 async def u256_route(request: web.Request):
@@ -115,8 +115,6 @@ def init_func(argv):
             web.post('/u256', u256_route),
             web.static('/build', BUILD),
         ])
-
-    print(argv)
 
     return app
 
