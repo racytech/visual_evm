@@ -1,3 +1,4 @@
+import os
 import aiohttp_cors
 import json
 
@@ -6,7 +7,7 @@ from aiohttp import web
 from aiohttp_cors.resource_options import ResourceOptions
 
 
-from py_server.u256_handler import u256_handler
+from u256_handler import u256_handler
 
 
 INDEX_HTML = """
@@ -32,13 +33,13 @@ INDEX_HTML = """
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <!-- End Dependencies -->
 
-    <link rel="stylesheet" href="./index.css">
+    <link rel="stylesheet" href="/build/index.min.css">
 </head>
 
 <body>
 
 
-    <script src="./index.js"></script>
+    <script src="/build/index.min.js"></script>
     <!-- <script src="https://unpkg.com/tx_browser/build/index.min.js"></script> -->
 </body>
 
@@ -46,9 +47,11 @@ INDEX_HTML = """
 """
 
 # TODO
-# dirname = os.path.dirname(__file__)
-# CSS = os.path.join(dirname, '..', 'dev', 'index.css')
-# JS = os.path.join(dirname, '..', 'dev', 'index.js')
+dirname = os.path.dirname(__file__)
+CSS = os.path.join(dirname, 'build')
+JS = os.path.join(dirname, 'build')
+BUILD = os.path.join(dirname, 'build')
+print(CSS, JS)
 
 
 async def u256_route(request: web.Request):
@@ -70,13 +73,15 @@ async def index(request):
 async def css(request):
     # p = os.path.abspath('..', 'dev')
     # print(p)
-    with open('/home/kairat/tx_browser/dev/index.css', 'r') as f:
+    with open(CSS, 'r') as f:
         _css = f.read()
         return web.Response(text=_css)
 
 
 async def js(request):
-    pass
+    with open(JS, 'r') as f:
+        _js = f.read()
+        return web.Response(text=_js)
 
 
 def init_func(argv):
@@ -108,8 +113,7 @@ def init_func(argv):
         app.add_routes([
             web.get('/', index),
             web.post('/u256', u256_route),
-            web.get('/index.css', css),
-            web.get('/index.js', js),
+            web.static('/build', BUILD),
         ])
 
     print(argv)

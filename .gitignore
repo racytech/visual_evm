@@ -1,1 +1,5 @@
 tests
+
+Pipfile.lock
+
+run_tests.sh
